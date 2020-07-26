@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #424242;
+            color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Temperature Graph</h2>
+        <div id="chart">
+        
+        </div>
+    </div>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="lib/apexcharts.js"></script>
+    <script>
+        var celciusData = JSON.parse('<%- JSON.stringify(celciusData) %>');
+        var humidityData = JSON.parse('<%- JSON.stringify(humidityData) %>');
+        var outsideHumidity = JSON.parse('<%- JSON.stringify(outsideHumidity) %>');
+        var outsideCelcius = JSON.parse('<%- JSON.stringify(outsideCelcius) %>');
+
+        var options = {
+            theme: {
+                mode: 'dark'
+            },
+            chart: {
+                type: "line",
+                height: 500,
+                dropShadow: {
+                    enabled: true,
+                    top: 3,
+                    left: 0,
+                    blur: 3,
+                    opacity: 0.2
+                }
+            },
+            series: [{
+                name: "Temperature (ºC)",
+                data: celciusData
+            },
+            {
+                name: "Humidity (%)",
+                data: humidityData
+            },
+            {
+                name: "Outside Temperature (ºC)",
+                data: outsideCelcius
+            },
+            {
+                name: "Outside Humidity (%)",
+                data: outsideHumidity
+            }],
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: 'MMM \'yy',
+                        day: 'dd MMM',
+                        hour: 'HH:mm'
+                    }
+                }
+            },
+            tooltip: {
+                x: {
+                    format: "HH:mm"
+                }
+            },
+            stroke: {
+                curve: "smooth"
+            }
+        }
+        
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+</body>
+</html>
