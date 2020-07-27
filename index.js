@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT;
 const owmKey = process.env.OWM_KEY;
 const sensorIp = process.env.SENSOR_IP;
+const updateRate = process.env.UPDATE_RATE || 10000;
 
 db.defaults({
     dataPoints: 0,
@@ -30,7 +31,7 @@ setInterval(() => {
     }).catch(() => {
         console.log("Sensor is offline, cannot query, retrying in 10 seconds...");
     });
-}, 10000);
+}, updateRate);
 
 function addDataPoints (json) {
     json.date = Date.now();
